@@ -1,0 +1,129 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using TaskManager.Data;
+
+namespace TaskManager
+{
+    /// <summary>
+    /// Interaction logic for LoadApp.xaml
+    /// </summary>
+    public partial class LoadApp : UserControl
+    {
+        private string ScheduleTaskDate;
+        private string JsonPath;
+        private UserTask? SelectedTask;
+        private List<UserTask> tasks = new();
+        public LoadApp()
+        {
+            InitializeComponent();
+            DateTime currentDate = DateTime.Now;
+            TaskDate.SelectedDate = currentDate;
+            ScheduleTaskDate = currentDate.ToString("dd/MM/yyyy");
+            JsonPath = "Data/tasks.json";
+            tasks = readJsonData();
+            DeleteTaskButton.IsEnabled = false;
+            showData();
+        }
+
+        private List<UserTask> readJsonData()
+        {
+            // Read the JSON data from the file
+            string jsonData = File.ReadAllText(JsonPath);
+            // Deserialize the JSON data into a list of UserTask objects
+            List<UserTask> tasks = JsonSerializer.Deserialize<List<UserTask>>(jsonData)!;
+            if (tasks is null)
+            {
+                MessageBox.Show("Το Αρχείο Δημιουργήθηκε Κενό");
+            }else
+            {
+                MessageBox.Show($"Φορτώθηκαν {tasks.Count} Εγγραφή/ες του Αρχείου");
+            }
+            return tasks!;
+        }
+
+        private void savetoJson()
+        {
+            // Serialize the updated list of UserTask objects to JSON
+            string updatedData = JsonSerializer.Serialize(tasks);
+            // Write the updated JSON data back to the file
+            File.WriteAllText(JsonPath, updatedData);
+        }
+
+        private void showData()
+        {
+            List<UserTask> todayTasks = new();
+            if (tasks.Count != 0)
+            {
+                todayTasks = tasks.FindAll(t => t.TaskScheduleDate.ToString("dd/MM/yyyy") == ScheduleTaskDate);
+            }
+            todayTasks = todayTasks.OrderBy(task => task.StartTime).ToList();
+            MainList.ItemsSource = todayTasks;
+        }
+
+        private void refreshTasks(object sender, RoutedEventArgs e)
+        {
+            showData();
+        }
+
+        private void AppInfo(object sender, RoutedEventArgs e)
+        {
+            string message = "Task Manager Εφαρμογή Διαχειριστής Εργασιών\n";
+            message += "Δημιουργήθηκε με την c#, .net 8.0 και wpf\n";
+            message += "Όνομα Προγραμματιστή : Ψαλτάκης Νικόλαος (npsalt)\n";
+            message += "(C) 1/2024";
+            MessageBox.Show(message, "Πληροφορίες");
+        }
+
+        private void AddNewTask(object sender, RoutedEventArgs e)
+        {
+            Window window = Window.GetWindow(this);
+            window.Content = new AddTaskWindow();
+
+        }
+
+        private void TaskDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (TaskDate.SelectedDate.HasValue)
+            {
+                DateTime selectedDate = TaskDate.SelectedDate.Value;
+                ScheduleTaskDate = selectedDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                showData();
+            }
+        }
+
+        private void RemoveTaskButton(object sender, RoutedEventArgs e)
+        {
+            if (SelectedTask is not null)
+            {
+                tasks.Remove(SelectedTask);
+                savetoJson();
+                showData();
+            }
+        }
+
+        private void MainList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (MainList.SelectedItem is not null)
+            {
+                SelectedTask = ((UserTask)MainList.SelectedItem);
+                DeleteTaskButton.IsEnabled = true;
+            } 
+        }
+    }
+}
+

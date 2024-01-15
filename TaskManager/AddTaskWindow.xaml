@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="TaskManager.AddTaskWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TaskManager"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10" />
+            <RowDefinition Height="45" />
+            <RowDefinition Height="55" />
+            <RowDefinition Height="55" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="10" />
+        </Grid.RowDefinitions>
+        <Border Grid.Row="1" BorderBrush="Red" BorderThickness="3">
+            <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Content="Εισαγωγή Νέας Εργασίας"/>
+        </Border>
+        <Border Grid.Row="2" BorderBrush="Red" BorderThickness="1">
+            <DatePicker Grid.Row="2" x:Name="newTaskDate" HorizontalAlignment="center" VerticalAlignment="center" FontSize="20" SelectedDateFormat="Long" Margin="10" SelectedDateChanged="TaskDate_SelectedDateChanged"/>
+        </Border>
+        <Border Grid.Row="3" BorderBrush="Red" BorderThickness="1">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ComboBox x:Name="newTaskStartHour" Margin="5" Width="75" Height="20" SelectedValue="00"/>
+                <ComboBox x:Name="newTaskStartMin" Margin="5" Width="75" Height="20" SelectedValue="00"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="4" BorderBrush="Red" BorderThickness="1">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Content="Διάρκεια Εργασίας" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"/>
+                <TextBox x:Name="newTaskDuration" Text="0" HorizontalAlignment="Right" VerticalAlignment="Center" Width="45" FontSize="20" Margin="30,0,0,0" TextAlignment="Center"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="5" BorderBrush="Red" BorderThickness="1">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Content="Όνομα" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"/>
+                <TextBox x:Name="newTaskName" Text="" HorizontalAlignment="Right" VerticalAlignment="Center" Width="500" FontSize="20" Margin="30,0,0,0" TextAlignment="Center"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="6" BorderBrush="Red" BorderThickness="1">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Content="Περιγραφή" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"/>
+                <TextBox x:Name="newTaskDesc" Text="" HorizontalAlignment="Right" VerticalAlignment="Center" Width="500" FontSize="20" Margin="30,0,0,0" TextAlignment="Center"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="8" BorderBrush="Red" BorderThickness="1">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button x:Name="NewTaskAdd" Content="Καταχώρηση" FontSize="24" Height="35" Click="NewTaskAdd_Click"/>
+                <Button x:Name="returnToTasks" Content="Επιστροφή" FontSize="24" Height="35" Margin="30,0,0,0" Click="returnToTasks_Click"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
