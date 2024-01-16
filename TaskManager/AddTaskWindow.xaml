@@ -33,7 +33,7 @@
         </Border>
         <Border Grid.Row="4" BorderBrush="Red" BorderThickness="1">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Label Content="Διάρκεια Εργασίας" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"/>
+                <Label Content="Διάρκεια Εργασίας σε Ώρες" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"/>
                 <TextBox x:Name="newTaskDuration" Text="0" HorizontalAlignment="Right" VerticalAlignment="Center" Width="45" FontSize="20" Margin="30,0,0,0" TextAlignment="Center"/>
             </StackPanel>
         </Border>

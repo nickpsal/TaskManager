@@ -15,11 +15,12 @@ namespace TaskManager
         private string ScheduleTaskDate;
         private string JsonPath;
         private UserTask? SelectedTask;
+        private DateTime currentDate;
         private List<UserTask> tasks = new();
         public LoadApp()
         {
             InitializeComponent();
-            DateTime currentDate = DateTime.Now;
+            currentDate = DateTime.Now;
             TaskDate.SelectedDate = currentDate;
             ScheduleTaskDate = currentDate.ToString("dd/MM/yyyy");
             JsonPath = "Data/tasks.json";
@@ -56,7 +57,7 @@ namespace TaskManager
         {
             if (tasks.Count != 0)
             {
-                MainList.ItemsSource = tasks.FindAll(t => t.TaskScheduleDate.ToString("dd/MM/yyyy") == ScheduleTaskDate).OrderBy(task => task.StartTime).ToList();
+                MainList.ItemsSource = tasks.FindAll(t => t.TaskScheduleDate == ScheduleTaskDate).OrderBy(task => task.StartTime).ToList();
             }
         }
 
@@ -72,7 +73,7 @@ namespace TaskManager
         private void AddNewTask(object sender, RoutedEventArgs e)
         {
             Window window = Window.GetWindow(this);
-            window.Content = new AddTaskWindow();
+            window.Content = new AddTaskWindow((DateTime)TaskDate.SelectedDate!);
 
         }
 

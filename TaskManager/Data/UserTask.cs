@@ -10,13 +10,13 @@ namespace TaskManager.Data
     {
         public string TaskName { get; set; } = string.Empty;
         public string TaskDescription { get; set; } = string.Empty;
-        public DateTime TaskSetupDate { get; set; }
-        public DateTime TaskScheduleDate { get; set; }
-        public DateTime StartTime { get; set; }
+        public string TaskSetupDate { get; set; }
+        public string TaskScheduleDate { get; set; }
+        public string StartTime { get; set; }
         public int TaskDuration { get; set; }
-        public DateTime EndTime { get; set; }
+        public string EndTime { get; set; }
 
-        public UserTask(string TaskName, string TaskDescription, DateTime TaskSetupDate, DateTime TaskScheduleDate, DateTime StartTime, int TaskDuration, DateTime endTime)
+        public UserTask(string TaskName, string TaskDescription, string TaskSetupDate, string TaskScheduleDate, string StartTime, int TaskDuration, string endTime)
         {
             this.TaskName = TaskName;
             this.TaskDescription = TaskDescription;

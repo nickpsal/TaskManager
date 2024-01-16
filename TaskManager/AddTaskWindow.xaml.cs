@@ -26,10 +26,11 @@ namespace TaskManager
     {
         private string ScheduleTaskDate;
         private string JsonPath;
-        public AddTaskWindow()
+        public AddTaskWindow(DateTime selectedDate)
         {
             InitializeComponent();
             DateTime currentDate = DateTime.Now;
+            newTaskDate.SelectedDate = selectedDate;
             JsonPath = "Data/tasks.json";
             ScheduleTaskDate = currentDate.ToString("dd/MM/yyyy");
             FillComboBoxes();
@@ -72,8 +73,14 @@ namespace TaskManager
             List<UserTask> existingTasks = JsonSerializer.Deserialize<List<UserTask>>(existingData) ?? new List<UserTask>();
             // Add the new UserTask objects to the existing list
             existingTasks.Add(newTask);
+            // Configure JsonSerializer settings to include line breaks
+            JsonSerializerOptions options = new JsonSerializerOptions
+            {
+                WriteIndented = true, // This ensures the output is formatted with indentation
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            };
             // Serialize the updated list of UserTask objects to JSON
-            string updatedData = JsonSerializer.Serialize(existingTasks);
+            string updatedData = JsonSerializer.Serialize(existingTasks, options);
             // Write the updated JSON data back to the file
             File.WriteAllText(JsonPath, updatedData);
         }
@@ -88,14 +95,14 @@ namespace TaskManager
             {
                 string taskName = newTaskName.Text;
                 string taskDesc = newTaskDesc.Text;
-                DateTime taskSchedule = DateTime.Now;
-                DateTime taskDate = DateTime.Parse(ScheduleTaskDate);
+                string taskSchedule = DateTime.Now.ToString("dd/MM/yyyy");
+                string taskDate = DateTime.Parse(ScheduleTaskDate).ToString("dd/MM/yyyy");
 
                 string startTimeStr = $"{newTaskStartHour.Text}:{newTaskStartMin.Text}";
-                if (DateTime.TryParse(startTimeStr, out DateTime taskTimeStart))
+                if (DateTime.TryParse(startTimeStr, out DateTime TimeStart))
                 {
-                    DateTime taskTimeEnd = taskTimeStart.AddMinutes(taskDuration);
-
+                    string taskTimeEnd = TimeStart.AddHours(taskDuration).ToString("HH:mm");
+                    string taskTimeStart = TimeStart.ToString("HH:mm");
                     UserTask newTask = new UserTask(taskName, taskDesc, taskSchedule, taskDate, taskTimeStart, taskDuration, taskTimeEnd);
                     savetoJson(newTask);
                     MessageBox.Show("Η Εργασία Αποθηκεύτηκε με Επιτυχία", "Πληροφορία");
