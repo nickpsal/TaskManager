@@ -32,32 +32,21 @@ namespace TaskManager
             DateTime currentDate = DateTime.Now;
             JsonPath = "Data/tasks.json";
             ScheduleTaskDate = currentDate.ToString("dd/MM/yyyy");
-            fillComboBox();
+            FillComboBoxes();
         }
 
-        public void fillComboBox()
+        public void FillComboBox(ComboBox comboBox, int maxValue)
         {
-            for (int i = 0; i<24; i++)
+            for (int i = 0; i < maxValue; i++)
             {
-                if (i < 10)
-                {
-                    newTaskStartHour.Items.Add("0" + i);
-                }else
-                {
-                    newTaskStartHour.Items.Add(i);
-                }
+                comboBox.Items.Add(i.ToString("D2"));
             }
-            for (int j = 0; j<60; j++)
-            {
-                if (j < 10)
-                {
-                    newTaskStartMin.Items.Add("0" + j);
-                }
-                else
-                {
-                    newTaskStartMin.Items.Add(j);
-                }
-            }
+        }
+
+        public void FillComboBoxes()
+        {
+            FillComboBox(newTaskStartHour, 24);
+            FillComboBox(newTaskStartMin, 60);
         }
 
         private void returnToTasks_Click(object sender, RoutedEventArgs e)
@@ -71,7 +60,7 @@ namespace TaskManager
             if (newTaskDate.SelectedDate.HasValue)
             {
                 DateTime selectedDate = newTaskDate.SelectedDate.Value;
-                ScheduleTaskDate = selectedDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                ScheduleTaskDate = selectedDate.ToString("dd/MM/yyyy");
             }
         }
 
@@ -91,24 +80,34 @@ namespace TaskManager
 
         private void NewTaskAdd_Click(object sender, RoutedEventArgs e)
         {
-            if (!int.TryParse(newTaskDuration.Text, out int TaskDuration) || TaskDuration <= 0)
+            if (!int.TryParse(newTaskDuration.Text, out int taskDuration) || taskDuration <= 0)
             {
                 MessageBox.Show("Δεν έδωσες Σωστή Διάρκεια ή δεν Έδωσες Αριθμό", "Προσοχή");
-            }else
+            }
+            else
             {
-                //"Task1", "Task 1", DateTime.Now, DateTime.Parse("13/01/2024"), DateTime.Parse("20:00:00"), 60, DateTime.Parse("20:00:00").AddMinutes(60));
-                string TaskName = newTaskName.Text;
-                string TaskDesc = newTaskDesc.Text;
-                DateTime TaskSchedule = DateTime.Now;
-                DateTime TaskDate = DateTime.Parse(ScheduleTaskDate);
-                DateTime TaskTimeStart = DateTime.Parse(newTaskStartHour.Text + ":" + newTaskStartMin.Text);
-                DateTime TaskTimeEnd = TaskTimeStart.AddMinutes(TaskDuration);
-                UserTask newTask = new(TaskName, TaskDesc, TaskSchedule, TaskDate, TaskTimeStart, TaskDuration ,TaskTimeEnd);
-                savetoJson(newTask);
-                MessageBox.Show("Η Εργασία Αποθηκεύτηκε με Επιτυχία");
-                Window window = Window.GetWindow(this);
-                window.Content = new LoadApp();
+                string taskName = newTaskName.Text;
+                string taskDesc = newTaskDesc.Text;
+                DateTime taskSchedule = DateTime.Now;
+                DateTime taskDate = DateTime.Parse(ScheduleTaskDate);
+
+                string startTimeStr = $"{newTaskStartHour.Text}:{newTaskStartMin.Text}";
+                if (DateTime.TryParse(startTimeStr, out DateTime taskTimeStart))
+                {
+                    DateTime taskTimeEnd = taskTimeStart.AddMinutes(taskDuration);
+
+                    UserTask newTask = new UserTask(taskName, taskDesc, taskSchedule, taskDate, taskTimeStart, taskDuration, taskTimeEnd);
+                    savetoJson(newTask);
+                    MessageBox.Show("Η Εργασία Αποθηκεύτηκε με Επιτυχία", "Πληροφορία");
+                    Window window = Window.GetWindow(this);
+                    window.Content = new LoadApp();
+                }
+                else
+                {
+                    MessageBox.Show("Λανθασμένη μορφή ώρας", "Προσοχή");
+                }
             }
         }
+
     }
 }

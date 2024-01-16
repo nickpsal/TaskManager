@@ -1,20 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TaskManager.Data;
 
 namespace TaskManager
@@ -66,23 +54,15 @@ namespace TaskManager
 
         private void showData()
         {
-            List<UserTask> todayTasks = new();
             if (tasks.Count != 0)
             {
-                todayTasks = tasks.FindAll(t => t.TaskScheduleDate.ToString("dd/MM/yyyy") == ScheduleTaskDate);
+                MainList.ItemsSource = tasks.FindAll(t => t.TaskScheduleDate.ToString("dd/MM/yyyy") == ScheduleTaskDate).OrderBy(task => task.StartTime).ToList();
             }
-            todayTasks = todayTasks.OrderBy(task => task.StartTime).ToList();
-            MainList.ItemsSource = todayTasks;
-        }
-
-        private void refreshTasks(object sender, RoutedEventArgs e)
-        {
-            showData();
         }
 
         private void AppInfo(object sender, RoutedEventArgs e)
         {
-            string message = "Task Manager Εφαρμογή Διαχειριστής Εργασιών\n";
+            string message = "Task Manager - Εφαρμογή Διαχειριστής Εργασιών Version 1.0\n";
             message += "Δημιουργήθηκε με την c#, .net 8.0 και wpf\n";
             message += "Όνομα Προγραμματιστή : Ψαλτάκης Νικόλαος (npsalt)\n";
             message += "(C) 1/2024";
@@ -101,12 +81,12 @@ namespace TaskManager
             if (TaskDate.SelectedDate.HasValue)
             {
                 DateTime selectedDate = TaskDate.SelectedDate.Value;
-                ScheduleTaskDate = selectedDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                ScheduleTaskDate = selectedDate.ToString("dd/MM/yyyy");
                 showData();
             }
         }
 
-        private void RemoveTaskButton(object sender, RoutedEventArgs e)
+        private void RemoveTask(object sender, RoutedEventArgs e)
         {
             if (SelectedTask is not null)
             {

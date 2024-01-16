@@ -24,7 +24,7 @@ namespace TaskManager.Data
             this.TaskScheduleDate = TaskScheduleDate;
             this.StartTime = StartTime;
             this.TaskDuration = TaskDuration;
-            EndTime = endTime;
+            this.EndTime = endTime;
         }
     }
 }

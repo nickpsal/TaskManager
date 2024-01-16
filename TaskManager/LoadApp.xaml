@@ -16,7 +16,7 @@
             <RowDefinition Height="10" />
         </Grid.RowDefinitions>
         <Border Grid.Row="1" BorderBrush="Red" BorderThickness="3">
-            <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Content="Εφαρμογή Διαχειριστής Εργασιών"/>
+            <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Content="TaskManager - Εφαρμογή Διαχειριστής Εργασιών"/>
         </Border>
         <Border Grid.Row="2" BorderBrush="Red" BorderThickness="1">
             <DatePicker Grid.Row="2" x:Name="TaskDate" HorizontalAlignment="center" VerticalAlignment="center" FontSize="20" SelectedDateFormat="Long" Margin="10" SelectedDateChanged="TaskDate_SelectedDateChanged"/>
@@ -26,9 +26,8 @@
         </Border>
         <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Center">
             <Button x:Name="NewTaskButton" Content="+" FontSize="20" Width="50" Height="40" VerticalAlignment="Center" HorizontalAlignment="Center" Click="AddNewTask"/>
-            <Button x:Name="DeleteTaskButton" Content="-" FontSize="20" Width="50" Height="40" VerticalAlignment="Center" Margin="10,0,0,0" Click="RemoveTaskButton"/>
+            <Button x:Name="DeleteTaskButton" Content="-" FontSize="20" Width="50" Height="40" VerticalAlignment="Center" Margin="10,0,0,0" Click="RemoveTask"/>
             <Button x:Name="InfoButton" Content="Πληροφορίες" FontSize="20" Width="150" Height="40" VerticalAlignment="Center" Margin="10,0,0,0" Click="AppInfo"/>
-            <Button x:Name="RefreshButton" Content="Ανανέωση" FontSize="20" Width="150" Height="40" VerticalAlignment="Center" Margin="10,0,0,0" Click="refreshTasks"/>
         </StackPanel>
     </Grid>
 </UserControl>
