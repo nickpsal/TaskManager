@@ -92,7 +92,7 @@ namespace TaskManager
 
         private async void MainList_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            // Wait for 3 seconds
+            // Wait for 0.3 seconds
             await Task.Delay(300);
             await StaticFunc.exporttoJson(tasks);
             MainList.SelectedItem = "";
