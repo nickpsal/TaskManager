@@ -5,6 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TaskManager"
         mc:Ignorable="d"
-        Title="Task Manager App 1.2" Height="700" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="Task Manager App 1.3" Height="700" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <ContentControl x:Name="MainContext" />
 </Window>
