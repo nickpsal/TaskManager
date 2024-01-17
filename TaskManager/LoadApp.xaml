@@ -22,12 +22,13 @@
             <DatePicker Grid.Row="2" x:Name="TaskDate" HorizontalAlignment="center" VerticalAlignment="center" FontSize="20" SelectedDateFormat="Long" Margin="10" SelectedDateChanged="TaskDate_SelectedDateChanged"/>
         </Border>
         <Border Grid.Row="3" BorderBrush="Red" BorderThickness="1">
-            <DataGrid x:Name="MainList" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="True" SelectionChanged="MainList_SelectionChanged"/>
+            <DataGrid x:Name="MainList" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" SelectionMode="Single" AutoGenerateColumns="True" SelectionChanged="MainList_SelectionChanged" CellEditEnding="MainList_CellEditEnding"/>
         </Border>
         <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Center">
             <Button x:Name="NewTaskButton" Content="+" FontSize="20" Width="50" Height="40" VerticalAlignment="Center" HorizontalAlignment="Center" Click="AddNewTask"/>
             <Button x:Name="DeleteTaskButton" Content="-" FontSize="20" Width="50" Height="40" VerticalAlignment="Center" Margin="10,0,0,0" Click="RemoveTask"/>
-            <Button x:Name="InfoButton" Content="Πληροφορίες" FontSize="20" Width="150" Height="40" VerticalAlignment="Center" Margin="10,0,0,0" Click="AppInfo"/>
+            <Button x:Name="InfoButton" Content="Info" FontSize="20" Width="80" Height="40" VerticalAlignment="Center" Margin="10,0,0,0" Click="AppInfo"/>
+            <Button x:Name="ExporttoJson" Content="Save to Json" FontSize="20" Width="150" Height="40" VerticalAlignment="Center" Margin="10,0,0,0" Click="ExporttoJson_Click"/>
         </StackPanel>
     </Grid>
 </UserControl>

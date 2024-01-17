@@ -13,13 +13,11 @@ namespace TaskManager
     public partial class AddTaskWindow : UserControl
     {
         private string ScheduleTaskDate;
-        private string JsonPath;
         public AddTaskWindow(DateTime selectedDate)
         {
             InitializeComponent();
             DateTime currentDate = DateTime.Now;
             newTaskDate.SelectedDate = selectedDate;
-            JsonPath = "Data/tasks.json";
             ScheduleTaskDate = currentDate.ToString("dd/MM/yyyy");
             FillComboBoxes();
         }
@@ -53,26 +51,6 @@ namespace TaskManager
             }
         }
 
-        private void savetoJson(UserTask newTask)
-        {
-            // Read the existing JSON data from the file
-            string existingData = File.ReadAllText(JsonPath);
-            // Deserialize the existing JSON data into a list of UserTask objects
-            List<UserTask> existingTasks = JsonSerializer.Deserialize<List<UserTask>>(existingData) ?? new List<UserTask>();
-            // Add the new UserTask objects to the existing list
-            existingTasks.Add(newTask);
-            // Configure JsonSerializer settings to include line breaks
-            JsonSerializerOptions options = new JsonSerializerOptions
-            {
-                WriteIndented = true, // This ensures the output is formatted with indentation
-                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-            };
-            // Serialize the updated list of UserTask objects to JSON
-            string updatedData = JsonSerializer.Serialize(existingTasks, options);
-            // Write the updated JSON data back to the file
-            File.WriteAllText(JsonPath, updatedData);
-        }
-
         private async void NewTaskAdd_Click(object sender, RoutedEventArgs e)
         {
             if (!int.TryParse(newTaskDuration.Text, out int taskDuration) || taskDuration <= 0)
@@ -92,7 +70,7 @@ namespace TaskManager
                     string taskTimeEnd = TimeStart.AddHours(taskDuration).ToString("HH:mm");
                     string taskTimeStart = TimeStart.ToString("HH:mm");
                     UserTask newTask = new UserTask(taskName, taskDesc, taskSchedule, taskDate, taskTimeStart, taskDuration, taskTimeEnd);
-                    savetoJson(newTask);
+                    await StaticFunc.savetoJson(newTask);
                     await StaticFunc.PlaySound("addTask");
                     Window window = Window.GetWindow(this);
                     window.Content = new LoadApp();

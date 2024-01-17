@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.ObjectModel;
+using System.IO;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,7 +16,7 @@ namespace TaskManager
         private string ScheduleTaskDate;
         private UserTask? SelectedTask;
         private DateTime currentDate;
-        private List<UserTask> tasks = new();
+        private ObservableCollection<UserTask> tasks;
         public LoadApp()
         {
             InitializeComponent();
@@ -24,14 +25,22 @@ namespace TaskManager
             ScheduleTaskDate = currentDate.ToString("dd/MM/yyyy");
             tasks = StaticFunc.readJsonData();
             DeleteTaskButton.IsEnabled = false;
+            ExporttoJson.IsEnabled = false;
             showData();
         }
 
         private void showData()
         {
-            if (tasks.Count != 0)
+            if (tasks != null)
             {
-                MainList.ItemsSource = tasks.FindAll(t => t.TaskScheduleDate == ScheduleTaskDate).OrderBy(task => task.StartTime).ToList();
+                MainList.ItemsSource = tasks
+                    .Where(task => task.TaskScheduleDate == ScheduleTaskDate)
+                    .OrderBy(task => task.StartTime)
+                    .ToList();
+            }
+            else
+            {
+                MainList.ItemsSource = new ObservableCollection<UserTask>();
             }
         }
 
@@ -66,7 +75,7 @@ namespace TaskManager
             if (SelectedTask is not null)
             {
                 tasks.Remove(SelectedTask);
-                StaticFunc.savetoJson(tasks);
+                await StaticFunc.exporttoJson(tasks);
                 DeleteTaskButton.IsEnabled = false;
                 showData();
                 await StaticFunc.PlaySound("deleteTask");
@@ -81,6 +90,16 @@ namespace TaskManager
                 DeleteTaskButton.IsEnabled = true;
             } 
         }
+
+        private async void ExporttoJson_Click(object sender, RoutedEventArgs e)
+        {
+            await StaticFunc.exporttoJson(tasks);
+            ExporttoJson.IsEnabled = false;
+        }
+
+        private void MainList_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            ExporttoJson.IsEnabled = true;
+        }
     }
 }
-
