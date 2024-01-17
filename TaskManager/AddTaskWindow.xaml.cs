@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using TaskManager.Data;
+using TaskManager.Static;
 
 namespace TaskManager
 {
@@ -72,7 +73,7 @@ namespace TaskManager
             File.WriteAllText(JsonPath, updatedData);
         }
 
-        private void NewTaskAdd_Click(object sender, RoutedEventArgs e)
+        private async void NewTaskAdd_Click(object sender, RoutedEventArgs e)
         {
             if (!int.TryParse(newTaskDuration.Text, out int taskDuration) || taskDuration <= 0)
             {
@@ -92,7 +93,7 @@ namespace TaskManager
                     string taskTimeStart = TimeStart.ToString("HH:mm");
                     UserTask newTask = new UserTask(taskName, taskDesc, taskSchedule, taskDate, taskTimeStart, taskDuration, taskTimeEnd);
                     savetoJson(newTask);
-                    MessageBox.Show("Η Εργασία Αποθηκεύτηκε με Επιτυχία", "Πληροφορία");
+                    await StaticFunc.PlaySound("addTask");
                     Window window = Window.GetWindow(this);
                     window.Content = new LoadApp();
                 }

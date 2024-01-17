@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using TaskManager.Data;
+using TaskManager.Static;
 
 namespace TaskManager
 {
@@ -37,9 +38,6 @@ namespace TaskManager
             if (tasks is null)
             {
                 MessageBox.Show("Το Αρχείο Δημιουργήθηκε Κενό");
-            }else
-            {
-                MessageBox.Show($"Φορτώθηκαν {tasks.Count} Εγγραφή/ες του Αρχείου");
             }
             return tasks!;
         }
@@ -86,13 +84,15 @@ namespace TaskManager
             }
         }
 
-        private void RemoveTask(object sender, RoutedEventArgs e)
+        private async void RemoveTask(object sender, RoutedEventArgs e)
         {
             if (SelectedTask is not null)
             {
                 tasks.Remove(SelectedTask);
                 savetoJson();
+                DeleteTaskButton.IsEnabled = false;
                 showData();
+                await StaticFunc.PlaySound("deleteTask");
             }
         }
 
