@@ -19,7 +19,11 @@
             <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Content="TaskManager - Εφαρμογή Διαχειριστής Εργασιών"/>
         </Border>
         <Border Grid.Row="2" BorderBrush="Red" BorderThickness="1">
-            <DatePicker Grid.Row="2" x:Name="TaskDate" HorizontalAlignment="center" VerticalAlignment="center" FontSize="20" SelectedDateFormat="Long" Margin="10" SelectedDateChanged="TaskDate_SelectedDateChanged" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button x:Name="PrevDay" Content="&lt;&lt;" FontSize="20" Width="70" Height="35" Click="PrevDay_Click"/>
+                <DatePicker x:Name="TaskDate" HorizontalAlignment="center" VerticalAlignment="center" FontSize="20" SelectedDateFormat="Long" Margin="10" SelectedDateChanged="TaskDate_SelectedDateChanged" />
+                <Button x:Name="NextDay" Content="&gt;&gt;" FontSize="20" Width="70" Height="35" Click="NextDay_Click"/>
+            </StackPanel>
         </Border>
         <Border Grid.Row="3" BorderBrush="Red" BorderThickness="1">
             <DataGrid x:Name="MainList" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" SelectionMode="Single" AutoGenerateColumns="True" SelectionChanged="MainList_SelectionChanged" CellEditEnding="MainList_CellEditEnding"/>

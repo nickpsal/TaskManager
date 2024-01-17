@@ -99,5 +99,27 @@ namespace TaskManager
             DeleteTaskButton.IsEnabled = false;
             showData();
         }
+
+        private void NextDay_Click(object sender, RoutedEventArgs e)
+        {
+            if (TaskDate.SelectedDate.HasValue)
+            {
+                TaskDate.SelectedDate = TaskDate.SelectedDate.Value.AddDays(1);
+                DateTime selectedDate = TaskDate.SelectedDate.Value;
+                ScheduleTaskDate = selectedDate.ToString("dd/MM/yyyy");
+                showData();
+            }
+        }
+
+        private void PrevDay_Click(object sender, RoutedEventArgs e)
+        {
+            if (TaskDate.SelectedDate.HasValue)
+            {
+                TaskDate.SelectedDate = TaskDate.SelectedDate.Value.AddDays(-1);
+                DateTime selectedDate = TaskDate.SelectedDate.Value;
+                ScheduleTaskDate = selectedDate.ToString("dd/MM/yyyy");
+                showData();
+            }
+        }
     }
 }
