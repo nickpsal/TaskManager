@@ -25,13 +25,12 @@ namespace TaskManager
             ScheduleTaskDate = currentDate.ToString("dd/MM/yyyy");
             tasks = StaticFunc.readJsonData();
             DeleteTaskButton.IsEnabled = false;
-            ExporttoJson.IsEnabled = false;
             showData();
         }
 
         private void showData()
         {
-            if (tasks != null)
+            if (tasks is not null)
             {
                 MainList.ItemsSource = tasks
                     .Where(task => task.TaskScheduleDate == ScheduleTaskDate)
@@ -91,15 +90,14 @@ namespace TaskManager
             } 
         }
 
-        private async void ExporttoJson_Click(object sender, RoutedEventArgs e)
+        private async void MainList_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
+            // Wait for 3 seconds
+            await Task.Delay(300);
             await StaticFunc.exporttoJson(tasks);
-            ExporttoJson.IsEnabled = false;
-        }
-
-        private void MainList_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            ExporttoJson.IsEnabled = true;
+            MainList.SelectedItem = "";
+            DeleteTaskButton.IsEnabled = false;
+            showData();
         }
     }
 }
