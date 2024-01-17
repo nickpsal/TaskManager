@@ -13,7 +13,6 @@ namespace TaskManager
     public partial class LoadApp : UserControl
     {
         private string ScheduleTaskDate;
-        private string JsonPath;
         private UserTask? SelectedTask;
         private DateTime currentDate;
         private List<UserTask> tasks = new();
@@ -23,31 +22,9 @@ namespace TaskManager
             currentDate = DateTime.Now;
             TaskDate.SelectedDate = currentDate;
             ScheduleTaskDate = currentDate.ToString("dd/MM/yyyy");
-            JsonPath = "Data/tasks.json";
-            tasks = readJsonData();
+            tasks = StaticFunc.readJsonData();
             DeleteTaskButton.IsEnabled = false;
             showData();
-        }
-
-        private List<UserTask> readJsonData()
-        {
-            // Read the JSON data from the file
-            string jsonData = File.ReadAllText(JsonPath);
-            // Deserialize the JSON data into a list of UserTask objects
-            List<UserTask> tasks = JsonSerializer.Deserialize<List<UserTask>>(jsonData)!;
-            if (tasks is null)
-            {
-                MessageBox.Show("Το Αρχείο Δημιουργήθηκε Κενό");
-            }
-            return tasks!;
-        }
-
-        private void savetoJson()
-        {
-            // Serialize the updated list of UserTask objects to JSON
-            string updatedData = JsonSerializer.Serialize(tasks);
-            // Write the updated JSON data back to the file
-            File.WriteAllText(JsonPath, updatedData);
         }
 
         private void showData()
@@ -89,7 +66,7 @@ namespace TaskManager
             if (SelectedTask is not null)
             {
                 tasks.Remove(SelectedTask);
-                savetoJson();
+                StaticFunc.savetoJson(tasks);
                 DeleteTaskButton.IsEnabled = false;
                 showData();
                 await StaticFunc.PlaySound("deleteTask");
