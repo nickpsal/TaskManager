@@ -30,17 +30,20 @@ namespace TaskManager
 
         private void showData()
         {
-            if (tasks is not null)
-            {
-                MainList.ItemsSource = tasks
-                    .Where(task => task.TaskScheduleDate == ScheduleTaskDate)
-                    .OrderBy(task => task.StartTime)
-                    .ToList();
-            }
-            else
+            if (tasks is not null) {
+                MainList.ItemsSource = findTodaysTasks();
+            }else
             {
                 MainList.ItemsSource = new ObservableCollection<UserTask>();
             }
+        }
+
+        private ObservableCollection<UserTask> findTodaysTasks()
+        {
+            return new ObservableCollection<UserTask>(tasks
+                    .Where(task => task.TaskScheduleDate == ScheduleTaskDate)
+                    .OrderBy(task => task.StartTime)
+                    .ToList());
         }
 
         private void AppInfo(object sender, RoutedEventArgs e)
