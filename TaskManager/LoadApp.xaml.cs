@@ -48,7 +48,7 @@ namespace TaskManager
 
         private void AppInfo(object sender, RoutedEventArgs e)
         {
-            string message = "Task Manager - Εφαρμογή Διαχειριστής Εργασιών Version 1.0\n";
+            string message = "Task Manager - Εφαρμογή Διαχειριστής Εργασιών - Version 1.3\n";
             message += "Δημιουργήθηκε με την c#, .net 8.0 και wpf\n";
             message += "Όνομα Προγραμματιστή : Ψαλτάκης Νικόλαος (npsalt)\n";
             message += "(C) 1/2024";
